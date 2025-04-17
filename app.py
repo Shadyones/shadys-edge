@@ -19,10 +19,18 @@ card_values = list(card_labels.keys())
 
 # Color mapping for action types
 color_map = {
-    "Hit": "#FF4B4B",       # Red
-    "Stand": "#4CAF50",     # Green
-    "Double": "#FFD700",    # Gold
-    "Split": "#00BCD4"      # Teal
+    "Hit": "#FF4B4B",
+    "Stand": "#4CAF50",
+    "Double": "#FFD700",
+    "Split": "#00BCD4"
+}
+
+# Emoji + slang mapping
+emoji_map = {
+    "Hit": "💥 SMASH THAT SHIT",
+    "Stand": "🧊 CHILL",
+    "Double": "💸 2x THAT SHIT",
+    "Split": "🔪 CHOP 'EM UP"
 }
 
 # UI dropdowns
@@ -34,17 +42,9 @@ with col2:
 
 dealer_card = st.selectbox("Dealer's Upcard", card_values, format_func=lambda x: card_labels[x])
 
-# Get result
+# Button
 if st.button("🎯 Get Recommended Play"):
-    result = get_blackjack_action([player_card_1, player_card_2], dealer_card)
-
-    emoji_map = {
-        "Hit": "💥 SMASH THAT SHIT",
-        "Stand": "🧊 CHILL",
-        "Double": "💸 2x THAT SHIT",
-        "Split": "🔪 CHOP 'EM UP"
-    }
-
+    result, explanation = get_blackjack_action([player_card_1, player_card_2], dealer_card)
     styled_result = emoji_map.get(result, result)
     result_color = color_map.get(result, "#FFFFFF")
 
@@ -73,5 +73,11 @@ if st.button("🎯 Get Recommended Play"):
         }}
         </style>
         """,
+        unsafe_allow_html=True
+    )
+
+    # Explanation underneath
+    st.markdown(
+        f"<p style='text-align:center; color: #AAAAAA; font-size: 18px; margin-top: 20px;'>{explanation}</p>",
         unsafe_allow_html=True
     )
